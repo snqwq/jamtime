@@ -10,11 +10,11 @@ bot = discord.Bot()
 
 # Commands
 @bot.slash_command(
-    name="Hello",
+    name="hello",
     description="Says hello world not much more to it",
     guild_ids=config.get_guild_ids(),
 )
-async def hello(self, ctx: discord.ApplicationContext):
+async def hello(ctx: discord.ApplicationContext):
     await ctx.respond(f"Hello {ctx.author}!")
 
 
