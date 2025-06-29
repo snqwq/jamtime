@@ -15,28 +15,14 @@ bot = discord.Bot()
     guild_ids=config.get_guild_ids(),
 )
 async def hello(self, ctx: discord.ApplicationContext):
-    
-        @discord.slash_command(
-        name="hello", description="Make the bot say hello", guild_ids=get_guild_ids()
-    )
-    async def hello(self, ctx: discord.ApplicationContext):
-        """Make the bot say hello to the user (helps check some permissions)"""
-        await ctx.respond(f"Hello {ctx.author}!")
-    
+    await ctx.respond(f"Hello {ctx.author}!")
+
 
 # Startup
 @bot.event
 async def on_ready():
     print(f"bot is logged in as {bot.user.name}#{bot.user.discriminator}")
 
-
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
 
 # Running
 bot.run(config.DISCORD_TOKEN)
