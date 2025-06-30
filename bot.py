@@ -1,4 +1,5 @@
 import config
+import time
 
 import discord
 from discord.ext import commands
@@ -16,6 +17,16 @@ bot = discord.Bot()
 )
 async def hello(ctx: discord.ApplicationContext):
     await ctx.respond(f"Hello {ctx.author}!")
+
+
+@bot.slash_command(
+    name="timetest",
+    description="bluh",
+    guild_ids=config.get_guild_ids(),
+)
+async def hello(ctx: discord.ApplicationContext):
+    await ctx.respond(f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}, idiot")
+
 
 
 # Startup
