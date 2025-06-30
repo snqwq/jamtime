@@ -4,7 +4,7 @@ import json
 import uuid
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord import option
 
 
@@ -85,6 +85,10 @@ async def start(
 
 
 
+
+@tasks.loop(minutes=10)
+async def reminder(self):
+    pass
 
 
 # Startup

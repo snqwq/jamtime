@@ -1,13 +1,47 @@
 import json
 import uuid
 
-db_path = "database.json"
+DB_PATH = "database.json"
 
-# reads data
-with open(db_path, "r") as f:
-    data = json.load(f)
+
+def add_timer_to_db():
+    # Reads data
+    with open(DB_PATH, "r") as f:
+        data = json.load(f)
+
+    # Updates data with new user
+    data[f"{uuid.uuid4()}"] = {
+        # "start_time": a
+        # "end_time": a
+        # "subscribers": [user]
+    }
     print(data)
-    print(type(data))
+
+    # Overwrite the json file with new data
+    with open(DB_PATH, "w") as f:
+        json.dump(data, f, indent=4)
+
+
+def notify():
+    # check db entries
+    with open(DB_PATH, "r") as f:
+        data = json.load(f)
+    
+    print(data)
+    
+    for key in data:
+        entry = data[key]
+        subscribers = entry["subscribers"]
+        print(subscribers)
+        #entry
+
+        # half way mark
+        # if (time.time() - entry.start_time) > (entry.end_time - entry.start_time) / 2:
+        #     user = entry.subscriber
+
+    # channel = user.dm_channel
+    # await channel.send()
+    
 
     # # checks if user is in data
     # if user_id not in data['users']:
@@ -16,10 +50,6 @@ with open(db_path, "r") as f:
     #         data = [data]
     #         print(type(data))
 
-    # updates data with new user
-    data[f"{uuid.uuid4()}"] = {"bob": "AAAAAAAAAAA"}
-    print(data)
 
-    # overwrite the json file with new data
-    with open(db_path, "w") as f:
-        json.dump(data, f, indent=4)
+
+notify()
