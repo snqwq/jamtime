@@ -6,7 +6,6 @@ VERSION = "0.0.1"
 IS_DEV = True
 DEV_GUILD_IDS = [1389020690505531422]
 
-
 # Load environment variables from .env file
 load_dotenv()
 

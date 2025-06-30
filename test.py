@@ -9,17 +9,15 @@ with open(db_path, "r") as f:
     print(data)
     print(type(data))
 
-# # checks if user is in data
-# if user_id not in data['users']:
-#     # checks if data is type list
-#     if type(data) is dict:
-#         data = [data]
-#         print(type(data))
+    # # checks if user is in data
+    # if user_id not in data['users']:
+    #     # checks if data is type list
+    #     if type(data) is dict:
+    #         data = [data]
+    #         print(type(data))
 
     # updates data with new user
-    data["database"][f"{uuid.uuid4()}"] = {
-        "bob": "AAAAAAAAAAA"
-    }
+    data[f"{uuid.uuid4()}"] = {"bob": "AAAAAAAAAAA"}
     print(data)
 
     # overwrite the json file with new data
