@@ -1,5 +1,6 @@
 import json
 import uuid
+import time
 
 DB_PATH = "database.json"
 
@@ -23,33 +24,23 @@ def add_timer_to_db():
 
 
 def notify():
-    # check db entries
+    # Check db entries
     with open(DB_PATH, "r") as f:
         data = json.load(f)
     
-    print(data)
-    
     for key in data:
         entry = data[key]
-        subscribers = entry["subscribers"]
-        print(subscribers)
-        #entry
 
-        # half way mark
-        # if (time.time() - entry.start_time) > (entry.end_time - entry.start_time) / 2:
-        #     user = entry.subscriber
+        elapsed_time = time.time() - entry["start_time"]
+        total_time = entry["end_time"] - entry["start_time"]
 
-    # channel = user.dm_channel
-    # await channel.send()
-    
-
-    # # checks if user is in data
-    # if user_id not in data['users']:
-    #     # checks if data is type list
-    #     if type(data) is dict:
-    #         data = [data]
-    #         print(type(data))
-
-
+        # Half way mark
+        if elapsed_time > total_time / 2:
+            # Notify subscribers
+            subscribers = entry["subscribers"]
+            for user in subscribers:
+                print(user)
+                # channel = user.dm_channel
+                # await channel.send()
 
 notify()
