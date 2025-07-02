@@ -2,7 +2,7 @@ import json
 import uuid
 import pathlib
 
-queue = {}
+queue = {}  # use later if race conditions become an issue
 
 
 def get_db_data(path: str) -> dict:
@@ -12,6 +12,7 @@ def get_db_data(path: str) -> dict:
     return data
 
 
-def write_db_data(path: str, new_data: dict) -> None:
+def write_db_data(path: str, new_data: dict, indentation: int = 4) -> None:
+    """Writes `new_data` into the JSON file at `path`"""
     with open(path, "w") as f:
-        json.dump(new_data, f, indent=4)
+        json.dump(new_data, f, indent=indentation)
