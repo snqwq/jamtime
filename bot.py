@@ -1,4 +1,3 @@
-import config
 import time
 import json
 import uuid
@@ -7,21 +6,11 @@ import discord
 from discord.ext import commands, tasks
 from discord import option
 
+import config
+from services import userdata
 
 # Init bot
 bot = discord.Bot()
-
-DB_PATH = "database.json"
-
-def get_db_data():
-    with open(DB_PATH, "r") as f:
-        data = json.load(f)
-    return data
-
-def write_db_data(new_data):
-    with open(DB_PATH, "w") as f:
-        json.dump(new_data, f, indent=4)
-
 
 
 # Commands
@@ -34,15 +23,15 @@ async def hello(ctx: discord.ApplicationContext):
     await ctx.respond(f"Hello {ctx.author.id}!")
 
 
-
 @bot.slash_command(
     name="timetest",
     description="bluh",
     guild_ids=config.get_guild_ids(),
 )
 async def hello(ctx: discord.ApplicationContext):
-    await ctx.respond(f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}, idiot")
-
+    await ctx.respond(
+        f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}, idiot"
+    )
 
 
 @bot.slash_command(
@@ -54,8 +43,8 @@ async def subscriptions(ctx: discord.ApplicationContext):
 
     user_id = ctx.author.id
     user_subscriptions = []
-    
-    data = get_db_data()
+
+    data = userdata.get_db_data(config.DB_PATH)
     for key in data:
         entry = data[key]
         for subscriber in entry["subscribers"]:
@@ -72,22 +61,18 @@ async def subscriptions(ctx: discord.ApplicationContext):
     guild_ids=config.get_guild_ids(),
 )
 @option("timer_id", description="id of timer to unsubscribe from")
-async def unsubscribe(
-    ctx: discord.ApplicationContext,
-    timer_id: str
-):
+async def unsubscribe(ctx: discord.ApplicationContext, timer_id: str):
     user_id = ctx.author.id
-    
-    data = get_db_data()
+
+    data = userdata.get_db_data(config.DB_PATH)
     for key, value in data.items():
         print(data)
         if key == timer_id:
             value["subscribers"].remove(user_id)
-            write_db_data(data)
+            userdata.write_db_data(config.DB_PATH, data)
             break
 
     await ctx.respond(f"unsubscribed from {timer_id}")
-
 
 
 @bot.slash_command(
@@ -96,18 +81,15 @@ async def unsubscribe(
     guild_ids=config.get_guild_ids(),
 )
 @option("timer_id", description="id of timer to subscribe to")
-async def unsubscribe(
-    ctx: discord.ApplicationContext,
-    timer_id: str
-):
+async def unsubscribe(ctx: discord.ApplicationContext, timer_id: str):
     user_id = ctx.author.id
-    
-    data = get_db_data()
+
+    data = userdata.get_db_data(config.DB_PATH)
     for key, value in data.items():
         print(data)
         if key == timer_id:
             value["subscribers"].append(user_id)
-            write_db_data(data)
+            userdata.write_db_data(config.DB_PATH, data)
             break
 
     await ctx.respond(f"subscribed to {timer_id}")
@@ -119,15 +101,14 @@ async def unsubscribe(
     guild_ids=config.get_guild_ids(),
 )
 async def active_timers(ctx: discord.ApplicationContext):
-    
+
     active_timers = []
 
-    data = get_db_data()
+    data = userdata.get_db_data(config.DB_PATH)
     for key, value in data.items():
         active_timers.append(f"{value["name"]} ({key})")
 
     await ctx.respond(f"active timers: {active_timers}")
-
 
 
 @bot.slash_command(
@@ -137,18 +118,16 @@ async def active_timers(ctx: discord.ApplicationContext):
 )
 @option("timer_id", description="id of timer to subscribe to")
 async def timer_properties(ctx: discord.ApplicationContext, timer_id: str):
-    
+
     properties = None
 
-    data = get_db_data()
+    data = userdata.get_db_data(config.DB_PATH)
     for key, value in data.items():
         if key == timer_id:
             properties = value
             break
 
     await ctx.respond(f"timer properties: {properties}")
-
-
 
 
 @bot.slash_command(
@@ -158,21 +137,17 @@ async def timer_properties(ctx: discord.ApplicationContext, timer_id: str):
 )
 @option("name", description="desired name")
 @option("duration", description="desired timer duration")
-async def start(
-   ctx: discord.ApplicationContext,
-   duration: int,
-   name: str
-):
+async def start(ctx: discord.ApplicationContext, duration: int, name: str):
     unique_id = str(uuid.uuid4())
 
     start_time = time.time()
-    end_time = start_time + 60*duration
+    end_time = start_time + 60 * duration
 
     await ctx.respond(
-       f"started {name}: {unique_id}, ends at {time.strftime('%Y-%m-%d %H:%M %Z',  time.localtime(end_time))}"
+        f"started {name}: {unique_id}, ends at {time.strftime('%Y-%m-%d %H:%M %Z',  time.localtime(end_time))}"
     )
 
-    data = get_db_data()
+    data = userdata.get_db_data(config.DB_PATH)
 
     # Updates data with new user
     data[f"{uuid.uuid4()}"] = {
@@ -183,19 +158,16 @@ async def start(
     }
     print(data)
 
-    write_db_data(data)
-
-
+    userdata.write_db_data(config.DB_PATH, data)
 
 
 @tasks.loop(seconds=60)
 async def reminder():
-    data = get_db_data()
-    
+    data = userdata.get_db_data(config.DB_PATH)
+
     if len(data) == 0:
         print("no data")
         return
-    
 
     for key in data:
         entry = data[key]
@@ -211,16 +183,15 @@ async def reminder():
             # Terminate db entry
 
             del data[key]
-            write_db_data(data)
+            userdata.write_db_data(config.DB_PATH, data)
 
-            
         # Half way mark
         elif elapsed_time > total_time / 2:
             # Notify subscribers
             message = f"{elapsed_time}/{total_time}"
 
-
-        if not message: return
+        if not message:
+            return
 
         subscribers = entry["subscribers"]
         for user_id in subscribers:
@@ -228,7 +199,6 @@ async def reminder():
             user = await bot.fetch_user(user_id)
             channel = await bot.create_dm(user)
             await channel.send(message)
-
 
 
 # Startup
