@@ -1,6 +1,7 @@
 import time
 import json
 import uuid
+import logging
 
 import discord
 from discord.ext import commands, tasks
@@ -9,8 +10,20 @@ from discord import option
 import config
 from services import userdata
 
+# Set up logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.FileHandler("bot.log"), logging.StreamHandler()],
+)
+
+# Create a logger
+logger = logging.getLogger("discord_bot")
+logger.info("Logging initialized.")
+
 # Init bot
 bot = discord.Bot()
+logger.info("Bot initialized")
 
 
 # Commands
@@ -166,7 +179,7 @@ async def reminder():
     data = userdata.get_db_data(config.DB_PATH)
 
     if len(data) == 0:
-        print("no data")
+        logger.warning("Empty database (reminders)")
         return
 
     for key in data:
@@ -204,9 +217,10 @@ async def reminder():
 # Startup
 @bot.event
 async def on_ready():
-    print(f"bot is logged in as {bot.user.name}#{bot.user.discriminator}")
+    logger.info(f"Bot is logged in as {bot.user.name}#{bot.user.discriminator}")
 
     reminder.start()
+    logger.info("Started reminder task")
 
 
 # Running
