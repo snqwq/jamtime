@@ -18,7 +18,7 @@ logging.basicConfig(
 )
 
 # Create a logger
-logger = logging.getLogger("discord_bot")
+logger = logging.getLogger("discord.jamtime")
 logger.info("Logging initialized.")
 
 # Init bot
