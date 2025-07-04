@@ -2,6 +2,7 @@ import time
 import json
 import uuid
 import logging
+import os
 
 import discord
 from discord.ext import commands, tasks
@@ -25,26 +26,19 @@ logger.info("Logging initialized.")
 bot = discord.Bot()
 logger.info("Bot initialized")
 
+# Dynamically load cogs
+if os.path.exists(config.COGS_DIRECTORY):
+    for filename in os.listdir(config.COGS_DIRECTORY):
+        if filename.endswith(".py"):
+            cog_name = filename[:-3]  # Remove the .py extension
+            try:
+                bot.load_extension(f"cogs.{cog_name}")
+                logger.info(f"Loaded cog: {cog_name}")
+            except Exception as e:
+                logger.error(f"Failed to load cog {cog_name}: {e}")
+
 
 # Commands
-@bot.slash_command(
-    name="hello",
-    description="Says hello world not much more to it",
-    guild_ids=config.get_guild_ids(),
-)
-async def hello(ctx: discord.ApplicationContext):
-    await ctx.respond(f"Hello {ctx.author.id}!")
-
-
-@bot.slash_command(
-    name="timetest",
-    description="bluh",
-    guild_ids=config.get_guild_ids(),
-)
-async def hello(ctx: discord.ApplicationContext):
-    await ctx.respond(
-        f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}, idiot"
-    )
 
 
 @bot.slash_command(
@@ -55,15 +49,7 @@ async def hello(ctx: discord.ApplicationContext):
 async def subscriptions(ctx: discord.ApplicationContext):
 
     user_id = ctx.author.id
-    user_subscriptions = []
-
-    data = userdata.get_db_data(config.DB_PATH)
-    for key in data:
-        entry = data[key]
-        for subscriber in entry["subscribers"]:
-            if subscriber == user_id:
-                user_subscriptions.append(f"{entry["name"]} ({key})")
-                break
+    user_subscriptions = userdata.get_user_subscriptions(config.DB_PATH, user_id)
 
     await ctx.respond(f"subscribed to: {user_subscriptions}")
 

@@ -6,6 +6,7 @@ VERSION = "0.0.1"
 IS_DEV = True
 DEV_GUILD_IDS = [1389020690505531422]
 DB_PATH = "database.json"
+COGS_DIRECTORY = "cogs"
 
 # Load environment variables from .env file
 load_dotenv()
