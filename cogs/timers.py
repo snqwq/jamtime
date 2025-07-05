@@ -1,5 +1,7 @@
 import uuid
 import time
+import random
+import string
 
 import discord
 from discord.ext import commands
@@ -47,32 +49,54 @@ class Timers(commands.Cog):
 
     @discord.slash_command(
         name="start",
-        description="bluh",
+        description="start a timer",
         guild_ids=get_guild_ids(),
     )
     @discord.option("name", description="desired name")
-    @discord.option("duration", description="desired timer duration")
+    @discord.option(
+        "duration", description="desired timer duration in minutes", input_type=int
+    )
     async def start(self, ctx: discord.ApplicationContext, duration: int, name: str):
         unique_id = str(uuid.uuid4())
 
         start_time = time.time()
         end_time = start_time + 60 * duration
-
-        await ctx.respond(
-            f"started {name}: {unique_id}, ends on <t:{round(end_time)}:F>"
-        )
+        short_id = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
         data = userdata.get_db_data(DB_PATH)
 
         # Updates data with new user
-        data[f"{uuid.uuid4()}"] = {
+        data[f"{unique_id}"] = {
+            "name": name,
+            "short_id": short_id,
+            "active": True,
+            "halfway": False,
             "start_time": start_time,
             "end_time": end_time,
             "subscribers": [ctx.author.id],
-            "name": name,
         }
 
         userdata.write_db_data(DB_PATH, data)
+
+        embed = discord.Embed(
+            title="Timer Started",
+            description=f"Timer **{name}** has been started with a duration of **{duration} minutes**.",
+            color=discord.Color.red(),
+        )
+
+        embed.add_field(name="ID", value=f"`{short_id}`", inline=False)
+        embed.add_field(
+            name="Started", value=f"<t:{round(start_time)}:F>", inline=False
+        )
+        embed.add_field(
+            name="Ends",
+            value=f"<t:{round(end_time)}:F> (<t:{round(end_time)}:R>)",
+            inline=False,
+        )
+
+        embed.set_footer(text=f"Timer ID: {unique_id}")
+
+        await ctx.respond(embed=embed)
 
 
 def setup(bot):

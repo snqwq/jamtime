@@ -54,4 +54,10 @@ def get_user_subscriptions(path: str, user_id: int) -> list:
     return user_subscriptions
 
 
-# def get_entry_by_shortid(path: str, )
+def short_id_to_key(path: str, short_id: str) -> str:
+    data = get_db_data(path)
+    for key in data:
+        entry = data[key]
+        if entry["short_id"] == short_id:
+            return key
+    return None
