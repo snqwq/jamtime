@@ -80,7 +80,7 @@ class Timers(commands.Cog):
 
         embed = discord.Embed(
             title="Timer Started",
-            description=f"Timer **{name}** has been started with a duration of **{duration} minutes**.",
+            description=f"Timer **{name}** has been started with a duration of **{duration} minute(s)**.",
             color=discord.Color.red(),
         )
 
