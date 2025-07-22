@@ -19,13 +19,21 @@ class Subscriptions(commands.Cog):
 
         user_subscriptions = userdata.get_user_subscriptions(DB_PATH, user_id)
 
-        await ctx.respond(
-            f"You are subscribed to: {user_subscriptions}",
+        if not user_subscriptions:
+            description = "You are not subscribed to any timers."
+        else:
+            description = "\n".join(user_subscriptions)
+
+        embed = discord.Embed(
+            title="Your Subscriptions",
+            description=description,
+            color=discord.Color.red(),
         )
+        await ctx.respond(embed=embed)
 
     @discord.slash_command(
         name="unsubscribe",
-        description="bluh",
+        description="Unsubscribe from a timer",
         guild_ids=get_guild_ids(),
     )
     @discord.option("timer_id", description="id of timer to unsubscribe from")
@@ -33,31 +41,49 @@ class Subscriptions(commands.Cog):
         user_id = ctx.author.id
 
         data = userdata.get_db_data(DB_PATH)
-        for key, value in data.items():
-            if key == timer_id:
-                value["subscribers"].remove(user_id)
+        key = userdata.short_id_to_key(DB_PATH, timer_id)
+
+        if not key:
+            await ctx.respond(f"Timer with id {timer_id} not found.")
+            return
+
+        for subscriber in data[key]["subscribers"]:
+            if subscriber == user_id:
+                data[key]["subscribers"].remove(user_id)
                 userdata.write_db_data(DB_PATH, data)
                 break
 
-        await ctx.respond(f"unsubscribed from {timer_id}")
+        name = data[key]["name"]
+
+        await ctx.respond(f"Unsubscribed from timer {name}(`{timer_id}`)")
 
     @discord.slash_command(
         name="subscribe",
-        description="bluh",
+        description="Subscribe to a timer",
         guild_ids=get_guild_ids(),
     )
-    @discord.option("timer_id", description="id of timer to subscribe to")
-    async def unsubscribe(ctx: discord.ApplicationContext, timer_id: str):
+    @discord.option("timer_id", description="ID of timer to subscribe to")
+    async def subscribe(ctx: discord.ApplicationContext, timer_id: str):
         user_id = ctx.author.id
 
         data = userdata.get_db_data(DB_PATH)
-        for key, value in data.items():
-            if key == timer_id:
-                value["subscribers"].append(user_id)
-                userdata.write_db_data(DB_PATH, data)
-                break
+        key = userdata.short_id_to_key(DB_PATH, timer_id)
 
-        await ctx.respond(f"subscribed to {timer_id}")
+        if not key:
+            await ctx.respond(f"Timer with id {timer_id} not found.")
+            return
+
+        for subscriber in data[key]["subscribers"]:
+            if subscriber == user_id:
+                await ctx.respond(f"You are already subscribed to {timer_id}.")
+                return
+
+        data[key]["subscribers"].append(user_id)
+        userdata.write_db_data(DB_PATH, data)
+
+        name = data[key]["name"]
+
+        await ctx.respond(f"Subscribed to timer {name} (`{timer_id}`)")
 
 
 def setup(bot):

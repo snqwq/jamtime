@@ -59,5 +59,9 @@ def short_id_to_key(path: str, short_id: str) -> str:
     for key in data:
         entry = data[key]
         if entry["short_id"] == short_id:
-            return key
+            if entry["active"]:
+                return key
+    if short_id in data:
+        return short_id
+
     return None
