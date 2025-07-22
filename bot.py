@@ -40,49 +40,56 @@ if os.path.exists(config.COGS_DIRECTORY):
 # Reminder task
 @tasks.loop(seconds=30)
 async def reminder():
-    logging.info("Running reminder task...")
+    logger.info("Running reminder task...")
     t1 = time.time()
     data = userdata.get_db_data(config.DB_PATH)
-    logging.debug(f"Loaded {len(data)} entries from the database.")
+    logger.debug(f"Loaded {len(data)} entries from the database.")
 
-    if len(data) == 0:
-        logger.warning("Empty database (reminders)")
+    if not data:
+        logger.info("Skipping reminder task (empty database).")
         return
 
-    for key in data:
-        entry = data[key]
-        if entry["active"] is False:
-            logging.debug(f"Skipping inactive entry: {key}")
+    updated = False
+    for key, entry in data.items():
+        if not entry.get("active"):
+            logger.debug(f"Skipping inactive entry: {key}")
             continue
 
-        logging.debug(f"Processing key: {key}")
-        elapsed_time = time.time() - entry["start_time"]
-        total_time = entry["end_time"] - entry["start_time"]
+        logger.debug(f"Processing key: {key}")
+        now = time.time()
+        elapsed = now - entry.get("start_time", now)
+        total = entry.get("end_time", now) - entry.get("start_time", now)
 
         message = None
 
+        name = entry.get("name", key)
+        short_id = entry.get("short_id", key)
         # End timer
-        if elapsed_time > total_time:
-            message = f"Timer {entry['name']} has ended."
-            # Terminate db entry
-
+        if elapsed > total:
+            message = f"Timer {name}(`{short_id}`) has ended."
             entry["active"] = False
+            updated = True
 
-        # Half way mark
-        elif elapsed_time > total_time / 2:
-            if entry["halfway"] == False:
-                # Notify subscribers
-                message = f"Timer {entry['name']} is half way done. It will end <t:{round(entry['end_time'])}:R>."
-                entry["halfway"] = True
+        # Halfway mark
+        elif elapsed > total / 2 and not entry.get("halfway", False):
+            message = (
+                f"Timer {name}(`{short_id}`) is half way done. "
+                f"It ends <t:{round(entry.get('end_time', now))}:R>."
+            )
+            entry["halfway"] = True
+            updated = True
 
         if message:
-            subscribers = entry["subscribers"]
-            for user_id in subscribers:
-                user = await bot.fetch_user(user_id)
-                channel = await bot.create_dm(user)
-                await channel.send(message)
+            for user_id in entry.get("subscribers", []):
+                try:
+                    user = await bot.fetch_user(user_id)
+                    channel = await user.create_dm()
+                    await channel.send(message)
+                except Exception as e:
+                    logger.error(f"Failed to send reminder to {user_id}: {e}")
 
-    userdata.write_db_data(config.DB_PATH, data)
+    if updated:
+        userdata.write_db_data(config.DB_PATH, data)
     t2 = time.time()
     logger.info(
         f"Reminder task completed in {round(t2 - t1, 3)} seconds. Processed {len(data)} entries."
@@ -90,6 +97,7 @@ async def reminder():
 
 
 # Cleanup task
+#! this is unused for now because i dont want to mess something up
 @tasks.loop(hours=1)
 async def cleanup():
     logging.info("Running cleanup task...")
