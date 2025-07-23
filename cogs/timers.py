@@ -57,14 +57,34 @@ class Timers(commands.Cog):
         guild_ids=get_guild_ids(),
     )
     @discord.option("name", description="desired name", input_type=str)
+    @discord.option("duration", description="desired timer duration", input_type=int)
     @discord.option(
-        "duration", description="desired timer duration in minutes", input_type=int
+        "unit",
+        description="unit of time (seconds, minutes, hours, days)",
+        input_type=str,
     )
-    async def start(self, ctx: discord.ApplicationContext, duration: int, name: str):
+    async def start(
+        self, ctx: discord.ApplicationContext, name: str, duration: int, unit: str
+    ):
         unique_id = str(uuid.uuid4())
 
+        duration_in_seconds = 0
+        if unit == "seconds":
+            duration_in_seconds = int(duration)
+        elif unit == "minutes":
+            duration_in_seconds = int(duration) * 60
+        elif unit == "hours":
+            duration_in_seconds = int(duration) * 3600
+        elif unit == "days":
+            duration_in_seconds = int(duration) * 86400
+        else:
+            await ctx.respond(
+                "Invalid unit of time. Please use seconds, minutes, hours, or days."
+            )
+            return
+
         start_time = time.time()
-        end_time = start_time + 60 * duration
+        end_time = start_time + duration_in_seconds
         short_id = "".join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
         data = userdata.get_db_data(DB_PATH)
