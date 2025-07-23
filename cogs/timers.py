@@ -29,9 +29,22 @@ class Timers(commands.Cog):
         data = userdata.get_db_data(DB_PATH)
         for key, value in data.items():
             if value["active"]:
-                active_timers.append(f"{value["name"]} ({key})")
+                active_timers.append(
+                    f"{value["name"]} ({value['short_id']}) - <t:{round(value['end_time'])}:R>"
+                )
 
-        await ctx.respond(f"active timers: {active_timers}")
+        if not active_timers:
+            description = "No active timers."
+        else:
+            description = "\n".join(active_timers)
+        if len(description) > 2048:
+            description = "Too many active timers to display."
+        embed = discord.Embed(
+            title="Active Timers",
+            description=description,
+            color=discord.Color.red(),
+        )
+        await ctx.respond(embed=embed)
 
     @timer_group.command(
         name="properties",
@@ -97,6 +110,7 @@ class Timers(commands.Cog):
             "halfway": False,
             "start_time": start_time,
             "end_time": end_time,
+            "creator": ctx.author.id,
             "subscribers": [ctx.author.id],
         }
 
@@ -127,8 +141,8 @@ class Timers(commands.Cog):
         description="stop a timer",
         guild_ids=get_guild_ids(),
     )
-    @discord.option("id", description="ID (short) of the timer to stop")
-    async def stop_timer(self, ctx: discord.ApplicationContext, id: str):
+    @discord.option("id", description="ID of the timer to stop")
+    async def stop(self, ctx: discord.ApplicationContext, id: str):
         key = userdata.short_id_to_key(DB_PATH, id)
         data = userdata.get_db_data(DB_PATH)
 
@@ -136,6 +150,14 @@ class Timers(commands.Cog):
 
         if not timer:
             await ctx.respond(f"Timer with ID `{id}` not found. (is it active?)")
+            return
+
+        if not timer["active"]:
+            await ctx.respond(f"Timer **{timer['name']}** is already stopped.")
+            return
+
+        if timer["creator"] != ctx.author.id:
+            await ctx.respond("You can only stop timers that you have created.")
             return
 
         timer["active"] = False
