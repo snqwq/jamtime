@@ -1,3 +1,3 @@
 # jamtime
 
-a discord bot that can create timers based on a subcription system
+Discord bot for timing game jams, projects, or really anything tbhdled
