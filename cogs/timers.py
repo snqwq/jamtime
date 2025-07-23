@@ -60,9 +60,7 @@ class Timers(commands.Cog):
     @discord.option(
         "duration", description="desired timer duration in minutes", input_type=int
     )
-    async def start(
-        self, ctx: discord.ApplicationContext, duration: int, name: str, start: bool
-    ):
+    async def start(self, ctx: discord.ApplicationContext, duration: int, name: str):
         unique_id = str(uuid.uuid4())
 
         start_time = time.time()
