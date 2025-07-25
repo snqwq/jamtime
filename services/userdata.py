@@ -5,6 +5,17 @@ import pathlib
 queue = {}  # use later if race conditions become an issue
 
 
+def initialize_db(path: str) -> None:
+    """Sets up the database by creating the JSON file if it doesn't exist.
+
+    Args:
+        path (str): Path to database file
+    """
+    if not pathlib.Path(path).exists():
+        with open(path, "w") as f:
+            json.dump({}, f)
+
+
 def get_db_data(path: str) -> dict:
     """Returns data from the specified JSON file.
 

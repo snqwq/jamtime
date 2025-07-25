@@ -1,11 +1,9 @@
 import time
-import json
 import logging
 import os
 
 import discord
-from discord.ext import commands, tasks
-from discord import option
+from discord.ext import tasks
 
 import config
 from services import userdata
@@ -24,6 +22,9 @@ logger.info("Logging initialized.")
 # Init bot
 bot = discord.Bot()
 logger.info("Bot initialized")
+
+# Ensure the database file exists
+userdata.initialize_db(config.DB_PATH)
 
 # Dynamically load cogs
 if os.path.exists(config.COGS_DIRECTORY):
@@ -132,6 +133,7 @@ async def cleanup():
 async def on_ready():
     logger.info(f"Bot is logged in as {bot.user.name}#{bot.user.discriminator}")
 
+    # cleaning up is for losers
     # cleanup.start()
     # logger.info("Started cleanup task")
 
@@ -140,4 +142,4 @@ async def on_ready():
 
 
 # Running
-bot.run(config.DISCORD_TOKEN)
+bot.run(config.DISCORD_TOKEN)  # 🩹 i pray this holds together
