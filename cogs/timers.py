@@ -82,13 +82,13 @@ class Timers(commands.Cog):
         unique_id = str(uuid.uuid4())
 
         duration_in_seconds = 0
-        if unit == "seconds":
+        if unit.lower() == "seconds":
             duration_in_seconds = int(duration)
-        elif unit == "minutes":
+        elif unit.lower() == "minutes":
             duration_in_seconds = int(duration) * 60
-        elif unit == "hours":
+        elif unit.lower() == "hours":
             duration_in_seconds = int(duration) * 3600
-        elif unit == "days":
+        elif unit.lower() == "days":
             duration_in_seconds = int(duration) * 86400
         else:
             await ctx.respond(
@@ -118,7 +118,7 @@ class Timers(commands.Cog):
 
         embed = discord.Embed(
             title="Timer Started",
-            description=f"Timer **{name}** has been started with a duration of **{duration} minute(s)**.",
+            description=f"Timer **{name}** has been started with a duration of **{duration} {unit}**.",
             color=discord.Color.red(),
         )
 
