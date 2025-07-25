@@ -9,3 +9,72 @@ Discord bot for staying productive and timing game jams, projects, or really any
 
 Written in python using the [Pycord](https://pycord.dev) library
 
+## Goals
+
+### v1.0 (first release)
+- [x] Basic timer functionality (start, stop, alerts, etc.)
+- [x] Slash commands
+- [x] Persistent timers
+- [x] Subscription system (you can subscribe to other people's timers)
+- [x] ID and short ID system for timers
+- [x] Automatic notifications (half way and end)
+- [x] Functions in dms
+- [x] Functions in servers
+- [ ] ~24/7 uptime/officially hosted somewhere
+- [x] Actually be useful
+- [ ] Awesome cool demo video
+
+
+### v2.0 (next release)
+- [ ] Pomodoro timer
+- [ ] Customizable timer reminders (not just half way and end)
+- [ ] customizable timer messages (like "TIMER IS OVER!!!" or whatever the user wants)
+- [ ] Project functionality
+- [ ] Hackatime integration (for tracking time spent on projects)
+- [ ] Change database to not just be a json file (use sqlite or something)
+
+
+### v3.0 (future release)
+- [ ] Timer categories (game jam, project, etc.)
+- [ ] Itch.io integration for gamejams (kinda funny how like half of the name is jam and the jam feature is like a far future thing)
+
+# Usage
+
+Either [invite the bot to your server](https://discord.com/oauth2/authorize?client_id=1389020970739826799&permissions=17602923513856&integration_type=0&scope=bot) or dm it if you are in a server with it, then you can use the slash commands.
+
+# Installation
+
+*only for if you want to run the bot yourself, otherwise you can just invite it to your server or dm it*
+
+## requirements
+- Python 3.12.1 (might work on other versions, but not tested)
+- git (only if you want to clone the repo)
+
+1. Clone the repository and cd into it:
+    ```bash
+    git clone https://github.com/snqwq/jamtime.git
+    cd jamtime
+    ```
+
+2. Set up a virtual environment (optional but recommended):
+    ```bash
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. Install the required packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. Create a `.env` file in the root directory and add your Discord bot token:
+    ```env
+    DISCORD_TOKEN=your_token_here
+    ```
+
+5. Run the bot:
+    ```bash
+    python bot.py
+    ```
+
+6. Enjoy! 🎉
