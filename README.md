@@ -72,9 +72,11 @@ Either [invite the bot to your server](https://discord.com/oauth2/authorize?clie
     DISCORD_TOKEN=your_token_here
     ```
 
-5. Run the bot:
+5. Change any configs in `config.py` as needed (e.g., `IS_DEV = False` if you want to run in production mode or changing `DB_PATH` to a different location)
+
+6. Run the bot:
     ```bash
     python bot.py
     ```
 
-6. Enjoy! 🎉
+7. Enjoy! 🎉
