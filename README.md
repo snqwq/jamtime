@@ -9,4 +9,3 @@ Discord bot for staying productive and timing game jams, projects, or really any
 
 Written in python using the [Pycord](https://pycord.dev) library
 
-S
