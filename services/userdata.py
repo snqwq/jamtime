@@ -43,7 +43,7 @@ def write_db_data(path: str, new_data: dict, indentation: int = 4) -> None:
 
 
 def get_user_subscriptions(path: str, user_id: int) -> list:
-    """_summary_
+    """Gets a list of subscriptions for a user
 
     Args:
         path (str): Path to database file
@@ -66,13 +66,24 @@ def get_user_subscriptions(path: str, user_id: int) -> list:
 
 
 def short_id_to_key(path: str, short_id: str) -> str:
+    """Gets the key associated with a short ID.
+
+    Args:
+        path (str): Path to the database file.
+        short_id (str): Short ID to look up.
+
+    Returns:
+        str: Key associated with the short ID, or None if not found.
+    """
     data = get_db_data(path)
     for key in data:
         entry = data[key]
-        if entry["short_id"] == short_id:
+        if entry["short_id"] == short_id.upper():
             if entry["active"]:
                 return key
+    # check if the short_id is actually a key already
     if short_id in data:
         return short_id
 
     return None
+

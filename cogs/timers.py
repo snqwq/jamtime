@@ -51,12 +51,12 @@ class Timers(commands.Cog):
         description="Get properties of a timer",
         guild_ids=get_guild_ids(),
     )
-    @discord.option("id", description="id of timer to subscribe to")
+    @discord.option("id", description="ID of the timer to get properties of")
     async def timer_properties(self, ctx: discord.ApplicationContext, id: str):
-
+        key = userdata.short_id_to_key(DB_PATH, id)
+        data = userdata.get_db_data(DB_PATH)
         properties = None
 
-        data = userdata.get_db_data(DB_PATH)
         for key, value in data.items():
             if key == id:
                 properties = value
