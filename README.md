@@ -32,11 +32,23 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [ ] Project functionality
 - [ ] Hackatime integration (for tracking time spent on projects)
 - [ ] Change database to not just be a json file (use sqlite or something)
+- [ ] Replace task system with a queue system and try to keep more stuff in memory
+- [ ] Statistics command
+- [ ] Timer pause/resume functionality
+- [ ] Timer notes/descriptions
+- [ ] Timer tags for organization
+- [ ] Timer searching
+- [ ] Scheduled timers (like "start timer at 3pm" or "start timer on 1st of January")
+- [ ] Natural language processing for timer commands (timer new 12 minutes, timer new 1879007624, timer new friday at 3pm, etc.)
+- [ ] Timer history (like "all timers last 5 weeks")
 
 
 ### v3.0 (future release)
 - [ ] Timer categories (game jam, project, etc.)
+- [ ] Timer types (stopwatch, repeating, countdown, etc.)
 - [ ] Itch.io integration for gamejams (kinda funny how like half of the name is jam and the jam feature is like a far future thing)
+- [ ] Google calendar integration (for scheduling timers)
+- [ ] Progress bars or other live visualizations of timers
 
 # Usage
 
