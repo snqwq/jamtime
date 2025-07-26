@@ -88,3 +88,7 @@ class Subscriptions(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Subscriptions(bot))
+
+
+if __name__ == "__main__":
+    print("This cog is not meant to be run directly. Please load it with the bot.")

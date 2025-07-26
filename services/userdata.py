@@ -87,3 +87,6 @@ def short_id_to_key(path: str, short_id: str) -> str:
 
     return None
 
+
+if __name__ == "__main__":
+    print("This module is not meant to be run directly.")
