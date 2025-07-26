@@ -20,7 +20,7 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [x] Automatic notifications (half way and end)
 - [x] Functions in dms
 - [x] Functions in servers
-- [ ] ~24/7 uptime/officially hosted somewhere
+- [x] ~24/7 uptime/officially hosted somewhere
 - [x] Actually be useful
 - [ ] Awesome cool demo video
 
