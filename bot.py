@@ -24,7 +24,7 @@ bot = discord.Bot()
 logger.info("Bot initialized")
 
 # Check if development mode is enabled
-if config.DEV_MODE:
+if config.IS_DEV:
     logger.warning("Development mode is enabled. This may affect bot behavior.")
 else:
     logger.info("Running in production mode.")
