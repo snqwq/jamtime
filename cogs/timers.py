@@ -55,12 +55,35 @@ class Timers(commands.Cog):
         data = userdata.get_db_data(DB_PATH)
         properties = None
 
-        for key, value in data.items():
-            if key == id:
-                properties = value
-                break
+        if key:
+            properties = data.get(key)
+            if not properties:
+                await ctx.respond(f"Timer with ID `{id}` not found.")
+                return
+        else:
+            await ctx.respond(f"Timer with ID `{id}` not found.")
+            return
 
-        await ctx.respond(f"timer properties: {properties}")
+        embed = discord.Embed(
+            title=f"Timer Properties for {properties['name']}",
+            color=discord.Color.red(),
+        )
+
+        embed.add_field(name="Creator", value=f"<@{properties['creator']}>", inline=False)
+        embed.add_field(name="ID", value=f"`{properties['short_id']}`", inline=False)
+        embed.add_field(
+            name="Started",
+            value=f"<t:{round(properties['start_time'])}:F> (<t:{round(properties['start_time'])}:R>)",
+            inline=False,
+        )
+        embed.add_field(
+            name="Ends",
+            value=f"<t:{round(properties['end_time'])}:F> (<t:{round(properties['end_time'])}:R>)",
+            inline=False,
+        )
+
+        embed.set_footer(text=key)
+        await ctx.respond(embed=embed)
 
     @timer_group.command(
         name="new",
