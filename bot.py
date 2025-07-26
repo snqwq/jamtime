@@ -80,8 +80,7 @@ async def reminder():
         # Halfway mark
         elif elapsed > total / 2 and not entry.get("halfway", False):
             message = (
-                f"Timer {name}(`{short_id}`) is half way done. "
-                f"It ends <t:{round(entry.get('end_time', now))}:R>."
+                f"Timer {name}(`{short_id}`) is half way done. " f"It ends <t:{round(entry.get('end_time', now))}:R>."
             )
             entry["halfway"] = True
             updated = True
@@ -98,9 +97,7 @@ async def reminder():
     if updated:
         userdata.write_db_data(config.DB_PATH, data)
     t2 = time.time()
-    logger.info(
-        f"Reminder task completed in {round(t2 - t1, 3)} seconds. Processed {len(data)} entries."
-    )
+    logger.info(f"Reminder task completed in {round(t2 - t1, 3)} seconds. Processed {len(data)} entries.")
 
 
 # Cleanup task

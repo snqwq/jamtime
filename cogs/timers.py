@@ -29,9 +29,7 @@ class Timers(commands.Cog):
         data = userdata.get_db_data(DB_PATH)
         for key, value in data.items():
             if value["active"]:
-                active_timers.append(
-                    f"{value['name']} ({value['short_id']}) - <t:{round(value['end_time'])}:R>"
-                )
+                active_timers.append(f"{value['name']} ({value['short_id']}) - <t:{round(value['end_time'])}:R>")
 
         if not active_timers:
             description = "No active timers."
@@ -76,9 +74,7 @@ class Timers(commands.Cog):
         description="unit of time (seconds, minutes, hours, days)",
         input_type=str,
     )
-    async def start(
-        self, ctx: discord.ApplicationContext, name: str, duration: int, unit: str
-    ):
+    async def start(self, ctx: discord.ApplicationContext, name: str, duration: int, unit: str):
         unique_id = str(uuid.uuid4())
 
         duration_in_seconds = 0
@@ -91,9 +87,7 @@ class Timers(commands.Cog):
         elif unit.lower() == "days":
             duration_in_seconds = int(duration) * 86400
         else:
-            await ctx.respond(
-                "Invalid unit of time. Please use seconds, minutes, hours, or days."
-            )
+            await ctx.respond("Invalid unit of time. Please use seconds, minutes, hours, or days.")
             return
 
         start_time = time.time()
@@ -123,9 +117,7 @@ class Timers(commands.Cog):
         )
 
         embed.add_field(name="ID", value=f"`{short_id}`", inline=False)
-        embed.add_field(
-            name="Started", value=f"<t:{round(start_time)}:F>", inline=False
-        )
+        embed.add_field(name="Started", value=f"<t:{round(start_time)}:F>", inline=False)
         embed.add_field(
             name="Ends",
             value=f"<t:{round(end_time)}:F> (<t:{round(end_time)}:R>)",

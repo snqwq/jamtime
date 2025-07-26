@@ -81,6 +81,7 @@ def short_id_to_key(path: str, short_id: str) -> str:
         if entry["short_id"] == short_id.upper():
             if entry["active"]:
                 return key
+
     # check if the short_id is actually a key already
     if short_id in data:
         return short_id

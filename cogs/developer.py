@@ -25,9 +25,7 @@ class Developer(commands.Cog):
         guild_ids=DEV_GUILD_IDS,
     )
     async def timetest(self, ctx: discord.ApplicationContext):
-        await ctx.respond(
-            f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}"
-        )
+        await ctx.respond(f"current time is {time.strftime('%Y-%m-%d %H:%M %Z', time.localtime(time.time()))}")
 
     @dev_group.command(
         name="ping",
