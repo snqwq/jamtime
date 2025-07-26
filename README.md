@@ -78,5 +78,6 @@ Either [invite the bot to your server](https://discord.com/oauth2/authorize?clie
     ```bash
     python bot.py
     ```
+7. If you want to run the bot on startup on Linux, you can set that up using `helpers/setup_linux.sh` (make sure to run it with `chmod +x helpers/setup_linux.sh` first)
 
-7. Enjoy! 🎉
+8. Enjoy! 🎉
