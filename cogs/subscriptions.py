@@ -16,13 +16,20 @@ class Subscriptions(commands.Cog):
     )
     async def subscriptions(self, ctx: discord.ApplicationContext):
         user_id = ctx.author.id
-
+        data = userdata.get_db_data(DB_PATH)
         user_subscriptions = userdata.get_user_subscriptions(DB_PATH, user_id)
 
-        if not user_subscriptions:
-            description = "You are not subscribed to any timers."
+        description = ""
+
+        if user_subscriptions:
+            for key in user_subscriptions:
+                entry = data[key]
+                description += (
+                    f"\n**{entry['name']}** (`{entry['short_id']}`) - "
+                    f"<t:{round(entry['end_time'])}:R>"
+                )
         else:
-            description = "\n".join(user_subscriptions)
+            description = "You are not subscribed to any timers."
 
         embed = discord.Embed(
             title="Your Subscriptions",
