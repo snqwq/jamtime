@@ -10,10 +10,15 @@ DB_PATH = "database.json"
 COGS_DIRECTORY = "cogs"
 
 # Load environment variables from .env file
-load_dotenv()
+try:
+    load_dotenv()
+except Exception as e:
+    print(f"Error loading .env file: {e}")
 
 # Load environment variables into python variables
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+if not DISCORD_TOKEN:
+    raise ValueError("DISCORD_TOKEN is not set in the environment variables.")
 
 
 # Helper functions
