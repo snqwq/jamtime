@@ -59,7 +59,7 @@ def get_user_subscriptions(path: str, user_id: int) -> list:
         entry = data[key]
         for subscriber in entry["subscribers"]:
             if subscriber == user_id:
-                user_subscriptions.append(f"{entry["name"]} ({key})")
+                user_subscriptions.append(f"{entry['name']} ({key})")
                 break
 
     return user_subscriptions
