@@ -30,7 +30,7 @@ class Timers(commands.Cog):
         for key, value in data.items():
             if value["active"]:
                 active_timers.append(
-                    f"{value["name"]} ({value['short_id']}) - <t:{round(value['end_time'])}:R>"
+                    f"{value['name']} ({value['short_id']}) - <t:{round(value['end_time'])}:R>"
                 )
 
         if not active_timers:
