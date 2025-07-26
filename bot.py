@@ -23,6 +23,12 @@ logger.info("Logging initialized.")
 bot = discord.Bot()
 logger.info("Bot initialized")
 
+# Check if development mode is enabled
+if config.DEV_MODE:
+    logger.warning("Development mode is enabled. This may affect bot behavior.")
+else:
+    logger.info("Running in production mode.")
+
 # Ensure the database file exists
 userdata.initialize_db(config.DB_PATH)
 
