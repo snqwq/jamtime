@@ -22,6 +22,7 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [x] Functions in servers
 - [x] ~24/7 uptime/officially hosted somewhere
 - [x] Actually be useful
+- [x] Sick logo
 - [ ] Awesome cool demo video
 
 
