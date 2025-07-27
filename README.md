@@ -9,6 +9,8 @@ Discord bot for staying productive and timing game jams, projects, or really any
 
 Written in python using the [Pycord](https://pycord.dev) library
 
+[**→ INVITE THE BOT HERE ←**](https://discord.com/oauth2/authorize?client_id=1389020970739826799&permissions=17602923513856&integration_type=0&scope=bot)
+
 ## Goals
 
 ### v1.0 (first release)
