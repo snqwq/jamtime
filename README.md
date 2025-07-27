@@ -53,7 +53,8 @@ Written in python using the [Pycord](https://pycord.dev) library
 
 # Usage
 
-Either [invite the bot to your server](https://discord.com/oauth2/authorize?client_id=1389020970739826799&permissions=17602923513856&integration_type=0&scope=bot) or dm it if you are in a server with it, then you can use the slash commands.
+Either [join the testing server](https://discord.gg/H7yAtwtnJH), [invite the bot to your server](https://discord.com/oauth2/authorize?client_id=1389020970739826799&permissions=17602923513856&integration_type=0&scope=bot), or dm it if you are in a server with it.
+Once you have done any of these you can use the slash commands!
 
 # Installation
 
