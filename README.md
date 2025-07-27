@@ -13,7 +13,7 @@ Written in python using the [Pycord](https://pycord.dev) library
 
 ## Goals
 
-### v1.0 (first release)
+### v1.0 (first shipping release)
 - [x] Basic timer functionality (start, stop, alerts, etc.)
 - [x] Slash commands
 - [x] Persistent timers
@@ -25,10 +25,10 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [x] ~24/7 uptime/officially hosted somewhere
 - [x] Actually be useful
 - [x] Sick logo
-- [ ] Awesome cool demo video
+- [ ] ~~Awesome cool demo video~~ **didnt end up doing this** (yet)
 
 
-### v2.0 (next release)
+### v2.0 (next shipping release)
 - [ ] Pomodoro timer
 - [ ] Customizable timer reminders (not just half way and end)
 - [ ] customizable timer messages (like "TIMER IS OVER!!!" or whatever the user wants)
@@ -46,7 +46,7 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [ ] Timer history (like "all timers last 5 weeks")
 
 
-### v3.0 (future release)
+### v3.0 (future shipping release)
 - [ ] Timer categories (game jam, project, etc.)
 - [ ] Timer types (stopwatch, repeating, countdown, etc.)
 - [ ] Itch.io integration for gamejams (kinda funny how like half of the name is jam and the jam feature is like a far future thing)
