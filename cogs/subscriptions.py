@@ -24,7 +24,12 @@ class Subscriptions(commands.Cog):
         if user_subscriptions:
             for key in user_subscriptions:
                 entry = data[key]
-                description += f"\n**{entry['name']}** (`{entry['short_id']}`) - " f"<t:{round(entry['end_time'])}:R>"
+                if entry["active"]:
+                    description += (
+                        f"\n**{entry['name']}** (`{entry['short_id']}`) - " f"<t:{round(entry['end_time'])}:R>"
+                    )
+            if not description:
+                description = "You have no active subscriptions."
         else:
             description = "You are not subscribed to any timers."
 
