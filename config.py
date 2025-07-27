@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import os
 
 # Variables
-VERSION = "0.0.1"
+VERSION = "1.0.0"
 IS_DEV = True
 DEV_GUILD_IDS = [1389020690505531422]
 DEV_USER_IDS = [686709101044039769]
