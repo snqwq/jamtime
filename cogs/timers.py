@@ -29,7 +29,7 @@ class Timers(commands.Cog):
         data = userdata.get_db_data(DB_PATH)
         for key, value in data.items():
             if value["active"]:
-                active_timers.append(f"{value['name']} ({value['short_id']}) - <t:{round(value['end_time'])}:R>")
+                active_timers.append(f"{value['name']} (`{value['short_id']}`) - <t:{round(value['end_time'])}:R>")
 
         if not active_timers:
             description = "No active timers."
