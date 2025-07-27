@@ -3,7 +3,6 @@ import os
 
 # Variables
 VERSION = "1.0.0"
-IS_DEV = True
 DEV_GUILD_IDS = [1389020690505531422]
 DEV_USER_IDS = [686709101044039769]
 DB_PATH = "database.json"
@@ -19,6 +18,11 @@ except Exception as e:
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 if not DISCORD_TOKEN:
     raise ValueError("DISCORD_TOKEN is not set in the environment variables.")
+
+if os.getenv("IS_DEV") is not None:
+    IS_DEV = os.getenv("IS_DEV").lower() in ("true", "1", "yes")
+else:
+    IS_DEV = False
 
 
 # Helper functions
