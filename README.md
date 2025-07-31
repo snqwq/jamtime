@@ -1,4 +1,4 @@
-# ![Prism 4 Steam](./assets/full_logo_light.png)
+# ![Jamtime](./assets/full_logo_light.png)
 ![Hackatime Badge](https://hackatime-badge.hackclub.com/U091H0MHT2B/jamtime?label=Time%20Wasted&style=for-the-badge)
 ![Pycord Badge](https://img.shields.io/badge/made_with-pycord-%237289da?style=for-the-badge&logo=discord&labelColor=%23424549)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/snqwq/jamtime?style=for-the-badge)
