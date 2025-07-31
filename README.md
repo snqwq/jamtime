@@ -44,6 +44,7 @@ Written in python using the [Pycord](https://pycord.dev) library
 - [ ] Scheduled timers (like "start timer at 3pm" or "start timer on 1st of January")
 - [ ] Natural language processing for timer commands (timer new 12 minutes, timer new 1879007624, timer new friday at 3pm, etc.)
 - [ ] Timer history (like "all timers last 5 weeks")
+- [ ] Todo system functionally similar to this [repo](https://github.com/sioodmy/todo/)
 
 
 ### v3.0 (future shipping release)
